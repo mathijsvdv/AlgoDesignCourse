@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Random;
 
 public class Sorting {
 	
@@ -65,8 +66,56 @@ public class Sorting {
 	 * (ex. partition(), a helper quickselect function)
 	 */
 	public static CompareInt quickSelect(int k, CompareInt[] arr) {
-		//TODO
-		return null;
+		Random rand = new Random();
+		return quickSelect(k, arr, 0, arr.length, rand);
 	}
 
+	private static CompareInt quickSelect(int k, CompareInt[] arr, int lo, int hi, Random rand) {
+		// The slice of the array is closed from the left and open from the right: [lo, hi)
+		if (hi == lo + 1) {
+			return arr[lo];
+		}
+
+		int pivotLoc = selectPivotLoc(arr, lo, hi, rand);
+		partition(arr, lo, hi, pivotLoc);
+		
+		// if (pivotLocation == k) {
+			
+		// }
+
+		// if (hi == lo + 1) {
+		// 	return arr[]
+		// }
+	}
+
+	private static int selectPivotLoc(CompareInt[] arr, int lo, int hi, Random rand) {
+		return rand.nextInt(lo, hi);
+	}
+
+	private static void partition(CompareInt[] arr, int lo, int hi, int pivotLoc) {
+		int n = hi - lo;
+		CompareInt[] belowPivot = new CompareInt[n];
+		CompareInt[] abovePivot = new CompareInt[n];
+
+		int nBelow, nAbove;
+		nBelow = nAbove = 0;
+		CompareInt pivot = arr[pivotLoc];
+		for (int i = lo; i < hi; i++) {
+			CompareInt a = arr[i];
+			if (a.compareTo(pivot) < 0) {
+				belowPivot[nBelow++] = a;
+			} else {
+				abovePivot[nAbove++] = a;
+			}
+		}
+		
+		int i = lo;
+		for (int iBelow = 0; iBelow < nBelow; iBelow++) {
+			arr[i++] = belowPivot[iBelow];
+		}
+		arr[i++] = pivot;
+		for (int iAbove = 0; iAbove < nAbove; iAbove++) {
+			arr[i++] = abovePivot[iAbove];
+		}
+	}
 }
