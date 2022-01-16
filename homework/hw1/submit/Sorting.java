@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 public class Sorting {
 	
@@ -12,12 +13,12 @@ public class Sorting {
 	public static void mergeSort(CompareInt[] arr) {
 		int n = arr.length;
 		if (n <= 1) {
-			return arr;
+			return;
 		}
 
 		int mid = n / 2;
-		CompareInt[] arrA = arr.copyOfRange(arr, 0, mid);
-		CompareInt[] arrB = arr.copyOfRange(arr, mid, n);
+		CompareInt[] arrA = Arrays.copyOfRange(arr, 0, mid);
+		CompareInt[] arrB = Arrays.copyOfRange(arr, mid, n);
 		
 		mergeSort(arrA);
 		mergeSort(arrB);
@@ -36,7 +37,7 @@ public class Sorting {
 		while (i < n && j < m) {
 			CompareInt a = arrA[i];
 			CompareInt b = arrB[j];
-			if (a < b) {
+			if (a.compareTo(b) < 0) {
 				arrC[k] = a;
 				i++;
 			} else {
