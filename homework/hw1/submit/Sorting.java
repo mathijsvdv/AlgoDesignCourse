@@ -77,22 +77,24 @@ public class Sorting {
 		}
 
 		int pivotLoc = selectPivotLoc(arr, lo, hi, rand);
-		partition(arr, lo, hi, pivotLoc);
-		
-		// if (pivotLocation == k) {
-			
-		// }
+		pivotLoc = partition(arr, lo, hi, pivotLoc);
 
-		// if (hi == lo + 1) {
-		// 	return arr[]
-		// }
+		int relPivotLoc = pivotLoc - lo;
+		if (relPivotLoc == k - 1) {
+			return arr[pivotLoc];
+		} else if (relPivotLoc < k - 1) {
+			return quickSelect(k - 1 - relPivotLoc, arr, pivotLoc + 1, hi, rand);
+		} else {
+			return quickSelect(k, arr, lo, pivotLoc, rand);
+		}
 	}
 
 	private static int selectPivotLoc(CompareInt[] arr, int lo, int hi, Random rand) {
-		return rand.nextInt(lo, hi);
+		int pivotLoc = rand.nextInt(hi - lo) + lo;
+		return pivotLoc;
 	}
 
-	private static void partition(CompareInt[] arr, int lo, int hi, int pivotLoc) {
+	private static int partition(CompareInt[] arr, int lo, int hi, int pivotLoc) {
 		int n = hi - lo;
 		CompareInt[] belowPivot = new CompareInt[n];
 		CompareInt[] abovePivot = new CompareInt[n];
@@ -101,6 +103,9 @@ public class Sorting {
 		nBelow = nAbove = 0;
 		CompareInt pivot = arr[pivotLoc];
 		for (int i = lo; i < hi; i++) {
+			if (i == pivotLoc) {
+				continue;
+			}
 			CompareInt a = arr[i];
 			if (a.compareTo(pivot) < 0) {
 				belowPivot[nBelow++] = a;
@@ -113,9 +118,12 @@ public class Sorting {
 		for (int iBelow = 0; iBelow < nBelow; iBelow++) {
 			arr[i++] = belowPivot[iBelow];
 		}
+		pivotLoc = i;
 		arr[i++] = pivot;
 		for (int iAbove = 0; iAbove < nAbove; iAbove++) {
 			arr[i++] = abovePivot[iAbove];
 		}
+
+		return pivotLoc;
 	}
 }
