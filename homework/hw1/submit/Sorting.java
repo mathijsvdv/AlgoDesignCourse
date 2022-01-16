@@ -10,13 +10,25 @@ public class Sorting {
 	 * @param arr
 	 */
 	public static void mergeSort(CompareInt[] arr) {
-		//TODO
+		int n = arr.length;
+		if (n <= 1) {
+			return arr;
+		}
+
+		int mid = n / 2;
+		CompareInt[] arrA = arr.copyOfRange(arr, 0, mid);
+		CompareInt[] arrB = arr.copyOfRange(arr, mid, n);
+		
+		mergeSort(arrA);
+		mergeSort(arrB);
+		merge(arr, arrA, arrB);
+
+		return;
 	}
 
-	public static CompareInt[] merge(CompareInt[] arrA, CompareInt[] arrB) {
+	public static void merge(CompareInt[] arrC, CompareInt[] arrA, CompareInt[] arrB) {
 		int n = arrA.length;
 		int m = arrB.length;
-		CompareInt[] arrC = new CompareInt[n+m];
 		
 		int i, j, k;
 		i = j = k = 0;
@@ -42,7 +54,7 @@ public class Sorting {
 			arrC[k++] = arrB[j++];
 		}
 
-		return arrC;
+		return;
 	}
 	
 	/**
