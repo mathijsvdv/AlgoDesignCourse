@@ -40,5 +40,29 @@ public class MyTests {
 		CompareInt[] arr = convert(new int[]{4, 1, 3});
 		assertEquals(3, KthSmallest.quickSelectImpl(2, arr));
 	}
-	
+
+	@Test
+	public void KthSmallestTrivialQuickSelectTest() {
+		CompareInt[] arr = convert(new int[]{1});
+		assertEquals(1, KthSmallest.quickSelectImpl(1, arr));
+	}
+
+	@Test
+	public void KthSmallestTwoElementQuickSelectTest() {
+		CompareInt[] arr = convert(new int[]{1, 3});
+		assertEquals(3, KthSmallest.quickSelectImpl(2, arr));
+	}
+
+	@Test
+	public void KthSmallestTwoElementUnsortedQuickSelectTest() {
+		CompareInt[] arr = convert(new int[]{3, 1});
+		assertEquals(3, KthSmallest.quickSelectImpl(2, arr));
+	}
+
+	@Test
+	public void KthSmallestUntrivialQuickSelectTest() {
+		CompareInt[] arr = convert(new int[]{3, 5, 6, 2, 1, 9, 10});
+		assertEquals(5, KthSmallest.quickSelectImpl(4, arr));
+	}
+
 }
