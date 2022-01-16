@@ -1,9 +1,9 @@
 #!/bin/sh
 # copy source to test directory
 echo "Copying code to test/ directory"
-cp ~/workspace/submit/MinHeap.java .
-cp ~/workspace/submit/Sorting.java .
-cp ~/workspace/submit/MyTests.java .
+cp ../submit/MinHeap.java .
+cp ../submit/Sorting.java .
+cp ../submit/MyTests.java .
 
 # delete the .class files (if they exist?)
 if [ -e MinHeap.class ]; then
