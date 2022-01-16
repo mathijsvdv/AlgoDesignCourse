@@ -27,7 +27,7 @@ public class Sorting {
 		return;
 	}
 
-	public static void merge(CompareInt[] arrC, CompareInt[] arrA, CompareInt[] arrB) {
+	private static void merge(CompareInt[] arrC, CompareInt[] arrA, CompareInt[] arrB) {
 		int n = arrA.length;
 		int m = arrB.length;
 		
