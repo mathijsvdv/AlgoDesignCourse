@@ -12,6 +12,38 @@ public class Sorting {
 	public static void mergeSort(CompareInt[] arr) {
 		//TODO
 	}
+
+	public static CompareInt[] merge(CompareInt[] arrA, CompareInt[] arrB) {
+		int n = arrA.length;
+		int m = arrB.length;
+		CompareInt[] arrC = new CompareInt[n+m];
+		
+		int i, j, k;
+		i = j = k = 0;
+		
+		while (i < n && j < m) {
+			CompareInt a = arrA[i];
+			CompareInt b = arrB[j];
+			if (a < b) {
+				arrC[k] = a;
+				i++;
+			} else {
+				arrC[k] = b;
+				j++;
+			}
+			k++;
+		}
+
+		while (i < n) {
+			arrC[k++] = arrA[i++];
+		}
+
+		while (j < m) {
+			arrC[k++] = arrB[j++];
+		}
+
+		return arrC;
+	}
 	
 	/**
 	 * Implement the quickSelect
