@@ -96,8 +96,7 @@ public class Sorting {
 
 	private static int partition(CompareInt[] arr, int lo, int hi, int pivotLoc) {
 		int n = hi - lo;
-		CompareInt[] belowPivot = new CompareInt[n];
-		CompareInt[] abovePivot = new CompareInt[n];
+		CompareInt[] partitioned = new CompareInt[n - 1]; // contains elements below and above pivot
 
 		int nBelow, nAbove;
 		nBelow = nAbove = 0;
@@ -107,21 +106,23 @@ public class Sorting {
 				continue;
 			}
 			CompareInt a = arr[i];
+			// Fill start of partitioned array if below pivot, and end when above it
 			if (a.compareTo(pivot) < 0) {
-				belowPivot[nBelow++] = a;
+				partitioned[nBelow++] = a;
 			} else {
-				abovePivot[nAbove++] = a;
+				partitioned[n - 2 - nAbove++] = a;
 			}
 		}
 		
 		int i = lo;
 		for (int iBelow = 0; iBelow < nBelow; iBelow++) {
-			arr[i++] = belowPivot[iBelow];
+			arr[i++] = partitioned[iBelow];
 		}
 		pivotLoc = i;
 		arr[i++] = pivot;
 		for (int iAbove = 0; iAbove < nAbove; iAbove++) {
-			arr[i++] = abovePivot[iAbove];
+			// Keep original order, up to partitioning, so take values starting from the end
+			arr[i++] = partitioned[n - 2 - iAbove];
 		}
 
 		return pivotLoc;
