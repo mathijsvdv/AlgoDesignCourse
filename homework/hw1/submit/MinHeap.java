@@ -34,8 +34,44 @@ public class MinHeap {
 	 * Extracts the smallest element from the heap
 	 */
 	public CompareInt extractMin() {
-		return null;
+		CompareInt min = heap[1];
+		heap[1] = heap[size];
+		heap[size] = 0;
+		sink(1);
+		return min;
+	}
+
+	/**
+	 * Sink an element down until the heap order property is restored
+	 * 
+	 * @param k index of the element that should be sunk
+	 */
+	public void sink(int k) {
+		while (2*k <= size) {
+			int kSmallest = 2*k;
+			if (kSmallest + 1 <= size && heap[kSmallest] < heap[kSmallest + 1]) {
+				kSmallest = kSmallest + 1;
+			}
+			if (heap[k] < heap[kSmallest]) {
+				break;
+			}
+			swap(k, kSmallest);
+			k = kSmallest
+		}
+		return;
 	}
 	
+	/**
+	 * Swap two elements with each other
+	 * 
+	 * @param i index of first element to swap
+	 * @param j index of second element to swap
+	 */	
+	private void swap(int i, int j) {
+		iVal = heap[i];
+		heap[i] = heap[j];
+		heap[j] = iVal;
+		return;
+	}	
 	
 }
