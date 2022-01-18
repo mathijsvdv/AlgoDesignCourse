@@ -36,7 +36,10 @@ public class MinHeap {
 	public CompareInt extractMin() {
 		CompareInt min = heap[1];
 		heap[1] = heap[size];
+		
 		heap[size] = 0;
+		size--;
+		
 		sink(1);
 		return min;
 	}
