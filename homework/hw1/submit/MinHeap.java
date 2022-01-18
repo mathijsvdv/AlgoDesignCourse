@@ -60,7 +60,7 @@ public class MinHeap {
 		}
 		return;
 	}
-	
+
 	/**
 	 * Swap two elements with each other
 	 * 
