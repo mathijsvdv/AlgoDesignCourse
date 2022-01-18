@@ -46,7 +46,7 @@ public class MinHeap {
 	 * 
 	 * @param k index of the element that should be sunk
 	 */
-	public void sink(int k) {
+	private void sink(int k) {
 		while (2*k <= size) {
 			int kSmallest = 2*k;
 			if (kSmallest + 1 <= size && heap[kSmallest] < heap[kSmallest + 1]) {
