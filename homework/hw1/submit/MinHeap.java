@@ -59,7 +59,7 @@ public class MinHeap {
 				break;
 			}
 			swap(k, kSmallest);
-			k = kSmallest
+			k = kSmallest;
 		}
 		return;
 	}
