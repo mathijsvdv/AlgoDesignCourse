@@ -1,4 +1,4 @@
-
+import java.util.Arrays;
 
 /**
  * A Heap implementation class
@@ -22,12 +22,20 @@ public class MinHeap {
 	}
 	
 	/**
+	 * Get maximum size of the heap
+	 * 
+	 */
+	public int getMaxSize() {
+		return heap.length - 1;
+	}
+
+	/**
 	 * Adds an element to the heap
 	 * 
 	 * @param val the value to be added to the heap
 	 */
 	public void add(CompareInt val) {
-		if (size == heap.length - 1) {
+		if (size == getMaxSize()) {
 			String msg = String.format("Heap is already at maximum capacity of %d elements", size);
 			throw new IllegalArgumentException(msg);
 		}
@@ -46,7 +54,7 @@ public class MinHeap {
 		CompareInt min = heap[1];
 		heap[1] = heap[size];
 		
-		heap[size] = 0;
+		heap[size] = null;
 		size--;
 		
 		sink(1);
@@ -59,7 +67,7 @@ public class MinHeap {
 	 * @param k index of the element that should swim up
 	 */
 	private void swim(int k) {
-		while (k > 1 && heap[k/2] < heap[k]) {
+		while (k > 1 && heap[k/2].compareTo(heap[k]) > 0) {
 			swap(k, k/2);
 			k /= 2;
 		}
@@ -74,10 +82,10 @@ public class MinHeap {
 	private void sink(int k) {
 		while (2*k <= size) {
 			int kSmallest = 2*k;
-			if (kSmallest + 1 <= size && heap[kSmallest] < heap[kSmallest + 1]) {
+			if (kSmallest + 1 <= size && heap[kSmallest].compareTo(heap[kSmallest + 1]) < 0) {
 				kSmallest = kSmallest + 1;
 			}
-			if (heap[k] < heap[kSmallest]) {
+			if (heap[k].compareTo(heap[kSmallest]) < 0) {
 				break;
 			}
 			swap(k, kSmallest);
@@ -93,7 +101,7 @@ public class MinHeap {
 	 * @param j index of second element to swap
 	 */	
 	private void swap(int i, int j) {
-		int iVal = heap[i];
+		CompareInt iVal = heap[i];
 		heap[i] = heap[j];
 		heap[j] = iVal;
 		return;
