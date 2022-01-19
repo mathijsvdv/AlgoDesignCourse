@@ -27,9 +27,18 @@ public class MinHeap {
 	 * @param val the value to be added to the heap
 	 */
 	public void add(CompareInt val) {
+		if (size == heap.length - 1) {
+			String msg = String.format("Heap is already at maximum capacity of %d elements", size);
+			throw new IllegalArgumentException(msg);
+		}
+
+		heap[size+1] = val;
+		size++;
+
+		swim(size);
 		return;
 	}
-	
+
 	/**
 	 * Extracts the smallest element from the heap
 	 */
@@ -42,6 +51,19 @@ public class MinHeap {
 		
 		sink(1);
 		return min;
+	}
+
+	/**
+	 * Swim an element up until the heap order property is restored
+	 * 
+	 * @param k index of the element that should swim up
+	 */
+	private void swim(int k) {
+		while (k > 1 && heap[k/2] < heap[k]) {
+			swap(k, k/2);
+			k /= 2;
+		}
+		return;
 	}
 
 	/**
