@@ -79,11 +79,10 @@ public class Sorting {
 		int pivotLoc = selectPivotLoc(arr, lo, hi, rand);
 		pivotLoc = partition(arr, lo, hi, pivotLoc);
 
-		int relPivotLoc = pivotLoc - lo;
-		if (relPivotLoc == k - 1) {
+		if (pivotLoc == k - 1) {
 			return arr[pivotLoc];
-		} else if (relPivotLoc < k - 1) {
-			return quickSelect(k - 1 - relPivotLoc, arr, pivotLoc + 1, hi, rand);
+		} else if (pivotLoc < k - 1) {
+			return quickSelect(k, arr, pivotLoc + 1, hi, rand);
 		} else {
 			return quickSelect(k, arr, lo, pivotLoc, rand);
 		}
@@ -100,6 +99,7 @@ public class Sorting {
 
 		int nBelow, nAbove;
 		nBelow = nAbove = 0;
+		
 		CompareInt pivot = arr[pivotLoc];
 		for (int i = lo; i < hi; i++) {
 			if (i == pivotLoc) {
