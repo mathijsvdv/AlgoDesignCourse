@@ -71,7 +71,7 @@ public class MinHeap {
 	 * @param j index of second element to swap
 	 */	
 	private void swap(int i, int j) {
-		iVal = heap[i];
+		int iVal = heap[i];
 		heap[i] = heap[j];
 		heap[j] = iVal;
 		return;
