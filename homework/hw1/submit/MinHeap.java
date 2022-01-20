@@ -56,7 +56,7 @@ public class MinHeap {
 		
 		heap[size] = null;
 		size--;
-		
+
 		sink(1);
 		return min;
 	}
@@ -82,7 +82,7 @@ public class MinHeap {
 	private void sink(int k) {
 		while (2*k <= size) {
 			int kSmallest = 2*k;
-			if (kSmallest + 1 <= size && heap[kSmallest].compareTo(heap[kSmallest + 1]) < 0) {
+			if (kSmallest + 1 <= size && heap[kSmallest + 1].compareTo(heap[kSmallest]) < 0) {
 				kSmallest = kSmallest + 1;
 			}
 			if (heap[k].compareTo(heap[kSmallest]) < 0) {
