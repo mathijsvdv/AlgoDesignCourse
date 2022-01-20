@@ -28,6 +28,13 @@ public class Sorting {
 		return;
 	}
 
+	/**
+	 * merge Merge sorted arrays arrA and arrB, saving the sorted result in arrC
+	 * 
+	 * @param arrC Target array to store the result in
+	 * @param arrA First array to merge
+	 * @param arrB Second array to merge
+	 */
 	private static void merge(CompareInt[] arrC, CompareInt[] arrA, CompareInt[] arrB) {
 		int n = arrA.length;
 		int m = arrB.length;
@@ -70,6 +77,15 @@ public class Sorting {
 		return quickSelect(k, arr, 0, arr.length, rand);
 	}
 
+	/**
+	 * quickSelect on a range within the array, given a random seed
+	 * 
+	 * @param k k'th smallest element to select
+	 * @param arr Array to search in
+	 * @param lo Lower bound of indices within the array to search, inclusive
+	 * @param hi Upper bound of indices within the array to search, exclusive
+	 * @param rand Random seed for selecting the pivot
+	 */
 	private static CompareInt quickSelect(int k, CompareInt[] arr, int lo, int hi, Random rand) {
 		// The slice of the array is closed from the left and open from the right: [lo, hi)
 		if (hi == lo + 1) {
@@ -88,11 +104,25 @@ public class Sorting {
 		}
 	}
 
+	/**
+	 * selectPivotLoc Select location of the pivot within the array
+	 * @param arr Array to search in
+	 * @param lo Lower bound of indices within the array to search, inclusive
+	 * @param hi Upper bound of indices within the array to search, exclusive
+	 * @param rand Random seed for selecting the pivot
+	 */
 	private static int selectPivotLoc(CompareInt[] arr, int lo, int hi, Random rand) {
 		int pivotLoc = rand.nextInt(hi - lo) + lo;
 		return pivotLoc;
 	}
 
+	/**
+	 * partition Partition array into elements below and above the pivot
+	 * @param arr Array to search in
+	 * @param lo Lower bound of indices within the array to search, inclusive
+	 * @param hi Upper bound of indices within the array to search, exclusive
+	 * @param pivotLoc Index of the pivot
+	 */
 	private static int partition(CompareInt[] arr, int lo, int hi, int pivotLoc) {
 		int n = hi - lo;
 		CompareInt[] partitioned = new CompareInt[n - 1]; // contains elements below and above pivot
