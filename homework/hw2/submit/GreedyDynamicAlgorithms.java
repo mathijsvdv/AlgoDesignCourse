@@ -20,7 +20,8 @@ public class GreedyDynamicAlgorithms {
 
 	private static int sortedOptimalIntervals(ArrayList<Interval> red, ArrayList<Interval> blue, 
 											  int redFromIndex, int blueFromIndex) {
-		if (blueFromIndex == blue.size()) {
+		int nBlue = blue.size();
+		if (blueFromIndex == nBlue) {
 			return 0;
 		}
 		Interval currentBlue = blue.get(blueFromIndex);
@@ -29,7 +30,7 @@ public class GreedyDynamicAlgorithms {
 		while (redFromIndex < nRed && !(red.get(redFromIndex).overlaps(currentBlue))) {
 			redFromIndex++;
 		}
-		if (redFromIndex == red.size()) {
+		if (redFromIndex == nRed) {
 			return -1; // Went through entire list of red intervals, couldn't find overlapping one
 		}
 
@@ -38,7 +39,7 @@ public class GreedyDynamicAlgorithms {
 		}
 
 		Interval optimalRed = red.get(redFromIndex - 1);
-		while (blueFromIndex < blue.size() && optimalRed.overlaps(blue.get(blueFromIndex))) {
+		while (blueFromIndex < nBlue && optimalRed.overlaps(blue.get(blueFromIndex))) {
 			blueFromIndex++;
 		}
 
