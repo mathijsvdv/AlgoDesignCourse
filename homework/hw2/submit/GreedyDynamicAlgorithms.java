@@ -86,7 +86,7 @@ public class GreedyDynamicAlgorithms {
 		}
 
 		public boolean overlaps(Interval o) {
-			return this.start <= o.finish || o.start <= this.finish;
+			return this.start <= o.finish && o.start <= this.finish;
 		}
 
 		@Override
