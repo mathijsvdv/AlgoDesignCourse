@@ -88,6 +88,11 @@ public class GreedyDynamicAlgorithms {
 		public boolean overlaps(Interval o) {
 			return this.start <= o.finish || o.start <= this.finish;
 		}
+
+		@Override
+		public String toString() {
+			return String.format("[%d, %d]", start, finish);
+		}
 		
 		/**
 		 * sorts a list of intervals by start time, you are free to use this on the first question
