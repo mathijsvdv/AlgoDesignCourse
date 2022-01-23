@@ -1,9 +1,9 @@
 #!/bin/sh
 # copy source to test directory
 echo "Copying code to test/ directory"
-cp ~/workspace/submit/GreedyDynamicAlgorithms.java .
-cp ~/workspace/submit/Huffman.java .
-cp ~/workspace/submit/MyTests.java .
+cp ../submit/GreedyDynamicAlgorithms.java .
+cp ../submit/Huffman.java .
+cp ../submit/MyTests.java .
 
 # delete the .class files (if they exist?)
 if [ -e GreedyDynamicAlgorithms.class ]; then
