@@ -13,8 +13,42 @@ public class GreedyDynamicAlgorithms {
 	 * @return
 	 */
 	public static int optimalIntervals(ArrayList<Interval> red, ArrayList<Interval> blue) {
-		//TODO
-		return -1;
+		Interval.sortByFinishTime(red);
+		Interval.sortByFinishTime(blue);
+		return sortedOptimalIntervals(red, blue, 0, 0);
+	}
+
+	private static int sortedOptimalIntervals(ArrayList<Interval> red, ArrayList<Interval> blue, 
+											  int redFromIndex, int blueFromIndex) {
+		if (blueFromIndex == blue.size()) {
+			return 0;
+		}
+		Interval currentBlue = blue.get(blueFromIndex);
+		int nRed = red.size();
+
+		while (redFromIndex < nRed && !(red.get(redFromIndex).overlaps(currentBlue))) {
+			redFromIndex++;
+		}
+		if (redFromIndex == red.size()) {
+			return -1; // Went through entire list of red intervals, couldn't find overlapping one
+		}
+
+		while (redFromIndex < nRed && red.get(redFromIndex).overlaps(currentBlue)) {
+			redFromIndex++;
+		}
+
+		Interval optimalRed = red.get(redFromIndex - 1);
+		while (blueFromIndex < blue.size() && optimalRed.overlaps(blue.get(blueFromIndex))) {
+			blueFromIndex++;
+		}
+
+		int restOptimalIntervals = sortedOptimalIntervals(red, blue, redFromIndex, blueFromIndex);
+
+		if (restOptimalIntervals == -1) {
+			return -1;
+		} else {
+			return 1 + restOptimalIntervals;
+		}
 	}
 	
 	/**
@@ -49,6 +83,10 @@ public class GreedyDynamicAlgorithms {
 		public Interval(int start, int finish) {
 			this.start = start;
 			this.finish = finish;
+		}
+
+		public boolean overlaps(Interval o) {
+			return this.start <= o.finish || o.start <= this.finish;
 		}
 		
 		/**
