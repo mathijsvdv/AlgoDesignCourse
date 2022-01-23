@@ -33,4 +33,45 @@ public class MyTests {
 		assertEquals("interval 1 red 1 blue", expectedOptimal, actualOptimal);
 	}
 
+	@Test
+	public void RedBeforeBlueNoOverlapTest() {
+		GreedyDynamicAlgorithms.Interval red = new GreedyDynamicAlgorithms.Interval(0, 2);
+		GreedyDynamicAlgorithms.Interval blue = new GreedyDynamicAlgorithms.Interval(3, 4);
+		assertEquals(red.overlaps(blue), false);
+	}
+
+	@Test
+	public void RedAfterBlueNoOverlapTest() {
+		GreedyDynamicAlgorithms.Interval red = new GreedyDynamicAlgorithms.Interval(5, 6);
+		GreedyDynamicAlgorithms.Interval blue = new GreedyDynamicAlgorithms.Interval(3, 4);
+		assertEquals(red.overlaps(blue), false);
+	}
+
+	@Test
+	public void RedBeforeBlueOverlapTest() {
+		GreedyDynamicAlgorithms.Interval red = new GreedyDynamicAlgorithms.Interval(0, 3);
+		GreedyDynamicAlgorithms.Interval blue = new GreedyDynamicAlgorithms.Interval(3, 4);
+		assertEquals(red.overlaps(blue), true);
+	}
+
+	@Test
+	public void RedAfterBlueOverlapTest() {
+		GreedyDynamicAlgorithms.Interval red = new GreedyDynamicAlgorithms.Interval(4, 5);
+		GreedyDynamicAlgorithms.Interval blue = new GreedyDynamicAlgorithms.Interval(3, 4);
+		assertEquals(red.overlaps(blue), true);
+	}
+
+	@Test
+	public void RedAroundBlueOverlapTest() {
+		GreedyDynamicAlgorithms.Interval red = new GreedyDynamicAlgorithms.Interval(2, 5);
+		GreedyDynamicAlgorithms.Interval blue = new GreedyDynamicAlgorithms.Interval(3, 4);
+		assertEquals(red.overlaps(blue), true);
+	}
+
+	@Test
+	public void RedWithinBlueOverlapTest() {
+		GreedyDynamicAlgorithms.Interval red = new GreedyDynamicAlgorithms.Interval(3, 4);
+		GreedyDynamicAlgorithms.Interval blue = new GreedyDynamicAlgorithms.Interval(2, 5);
+		assertEquals(red.overlaps(blue), true);
+	}
 }
