@@ -15,6 +15,9 @@ public class GreedyDynamicAlgorithms {
 	public static int optimalIntervals(ArrayList<Interval> red, ArrayList<Interval> blue) {
 		Interval.sortByFinishTime(red);
 		Interval.sortByFinishTime(blue);
+
+		
+
 		return sortedOptimalIntervals(red, blue, 0, 0);
 	}
 
@@ -55,7 +58,7 @@ public class GreedyDynamicAlgorithms {
 			return 1 + restOptimalIntervals;
 		}
 	}
-	
+
 	/**
 	 * Goal: find any path of lowest cost from the top-left of the grid (grid[0][0])
 	 * to the bottom right of the grid (grid[m-1][n-1]).  Output this sequence of directions
@@ -64,8 +67,76 @@ public class GreedyDynamicAlgorithms {
 	 * @return
 	 */
 	public static List<Direction> optimalGridPath(int[][] grid) {
-		//TODO
-		return null;
+		if (grid.length == 0) {
+			return new LinkedList<Direction>();
+		}
+
+		int m = grid.length;
+		int n = grid[0].length;
+		Integer[][] pathGrid = new Integer[m][n];
+
+		return optimalGridPath(grid, pathGrid, 0, 0);
+	}
+
+	/**
+	 * Goal: find any path of lowest cost from the top-left of the grid (grid[0][0])
+	 * to the bottom right of the grid (grid[m-1][n-1]).  Output this sequence of directions
+	 * 
+	 * @param grid - the 2d grid containing the cost of each location in the grid.
+	 * @param pathGrid - the 2d grid containing the cost of the cheapest path to the bottom right
+	 * @param iFrom - start from coordinate (iFrom, jFrom)
+	 * @param jFrom - start from coordinate (iFrom, jFrom)
+	 * @return
+	 */
+	private static List<Direction> optimalGridPath(int[][] grid, Integer[][] pathGrid, 
+												   int iFrom, int jFrom) {
+		int m = grid.length;
+		int n = grid[0].length;
+
+		boolean computePathGrid = false;
+		if (pathGrid[iFrom][jFrom] == null) {
+			computePathGrid = true;
+			pathGrid[iFrom][jFrom] = grid[iFrom][jFrom];
+		}
+
+		List<Direction> downPath = null;
+		List<Direction> rightPath = null;
+		if (iFrom < m - 1) {
+			downPath = optimalGridPath(grid, pathGrid, iFrom + 1, jFrom);
+		}
+		if (jFrom < n - 1) {
+			rightPath = optimalGridPath(grid, pathGrid, iFrom, jFrom + 1);
+		}
+
+		if (downPath == null && rightPath == null) {
+			return new LinkedList<Direction>();
+		} else if (downPath == null) {
+			if (computePathGrid) {
+				pathGrid[iFrom][jFrom] += pathGrid[iFrom + 1][jFrom];
+			}
+			rightPath.add(0, Direction.RIGHT);
+			return rightPath;
+		} else if (rightPath == null) {
+			if (computePathGrid) {
+				pathGrid[iFrom][jFrom] += pathGrid[iFrom][jFrom + 1];
+			}
+			downPath.add(0, Direction.DOWN);
+			return downPath;
+		}
+
+		if (pathGrid[iFrom + 1][jFrom] < pathGrid[iFrom][jFrom + 1]) {
+			if (computePathGrid) {
+				pathGrid[iFrom][jFrom] += pathGrid[iFrom + 1][jFrom];
+			}
+			rightPath.add(0, Direction.RIGHT);
+			return rightPath;
+		} else {
+			if (computePathGrid) {
+				pathGrid[iFrom][jFrom] += pathGrid[iFrom][jFrom + 1];
+			}
+			downPath.add(0, Direction.DOWN);
+			return downPath;			
+		}
 	}
 	
 	/**
