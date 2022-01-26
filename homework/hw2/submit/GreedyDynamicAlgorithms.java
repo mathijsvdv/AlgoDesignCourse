@@ -18,7 +18,8 @@ public class GreedyDynamicAlgorithms {
 		return sortedOptimalIntervals(red, blue, 0, 0);
 	}
 
-	private static int sortedOptimalIntervals(ArrayList<Interval> red, ArrayList<Interval> blue, 
+	private static int sortedOptimalIntervals(ArrayList<Interval> red, 
+											  ArrayList<Interval> blue, 
 											  int redFromIndex, int blueFromIndex) {
 		int nBlue = blue.size();
 		if (blueFromIndex == nBlue) {
@@ -31,7 +32,8 @@ public class GreedyDynamicAlgorithms {
 			redFromIndex++;
 		}
 		if (redFromIndex == nRed) {
-			return -1; // Went through entire list of red intervals, couldn't find overlapping one
+			// Went through entire list of red intervals, couldn't find overlapping one
+			return -1; 
 		}
 
 		while (redFromIndex < nRed && red.get(redFromIndex).overlaps(currentBlue)) {
@@ -43,7 +45,9 @@ public class GreedyDynamicAlgorithms {
 			blueFromIndex++;
 		}
 
-		int restOptimalIntervals = sortedOptimalIntervals(red, blue, redFromIndex, blueFromIndex);
+		int restOptimalIntervals = sortedOptimalIntervals(
+			red, blue, redFromIndex, blueFromIndex
+		);
 
 		if (restOptimalIntervals == -1) {
 			return -1;
