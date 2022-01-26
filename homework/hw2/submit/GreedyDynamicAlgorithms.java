@@ -16,8 +16,6 @@ public class GreedyDynamicAlgorithms {
 		Interval.sortByFinishTime(red);
 		Interval.sortByFinishTime(blue);
 
-		
-
 		return sortedOptimalIntervals(red, blue, 0, 0);
 	}
 
@@ -67,76 +65,81 @@ public class GreedyDynamicAlgorithms {
 	 * @return
 	 */
 	public static List<Direction> optimalGridPath(int[][] grid) {
-		if (grid.length == 0) {
-			return new LinkedList<Direction>();
-		}
-
-		int m = grid.length;
-		int n = grid[0].length;
-		Integer[][] pathGrid = new Integer[m][n];
-
-		return optimalGridPath(grid, pathGrid, 0, 0);
+		int[][] optGrid = optimalGrid(grid);
+		return optimal2GridPath(optGrid);
 	}
 
 	/**
-	 * Goal: find any path of lowest cost from the top-left of the grid (grid[0][0])
-	 * to the bottom right of the grid (grid[m-1][n-1]).  Output this sequence of directions
+	 * Find any path of lowest cost from the top-left of the grid (optimalGrid[0][0])
+	 * to the bottom right of the grid (optimalGrid[m-1][n-1]). The optimalGrid already
+	 * contains the cost of the optimal path from each location in the grid.
 	 * 
-	 * @param grid - the 2d grid containing the cost of each location in the grid.
-	 * @param pathGrid - the 2d grid containing the cost of the cheapest path to the bottom right
-	 * @param iFrom - start from coordinate (iFrom, jFrom)
-	 * @param jFrom - start from coordinate (iFrom, jFrom)
+	 * A greedy algorithm can be used here since the cost of the optimal path from each
+	 * location is already known.
+	 * 
+	 * @param grid - the 2d grid containing the cost the optimal path of each location in the grid.
 	 * @return
 	 */
-	private static List<Direction> optimalGridPath(int[][] grid, Integer[][] pathGrid, 
-												   int iFrom, int jFrom) {
+	public static List<Direction> optimal2GridPath(int[][] optimalGrid) {
+		LinkedList<Direction> path = new LinkedList<Direction>();
+
+		int m = optimalGrid.length;
+		int n = m == 0 ? 0 : optimalGrid[0].length;
+		int i, j;
+		i = j = 0;
+
+		while (i < m - 1 || j < n - 1) {
+			if (i == m - 1) {
+				path.add(Direction.RIGHT);
+				j++;
+			} else if (j == n - 1) {
+				path.add(Direction.DOWN);
+				i++;
+			} else if (optimalGrid[i][j+1] < optimalGrid[i+1][j]) {
+				path.add(Direction.RIGHT);
+				j++;
+			} else {
+				path.add(Direction.DOWN);
+				i++;
+			}
+		}
+
+		return path;
+	}
+
+	/**
+	 * Goal: find lowest cost from the top-left of the grid (grid[0][0])
+	 * to the bottom right of the grid (grid[m-1][n-1]).  Output this optimal cost at every point.
+	 * 
+	 * @param grid - the 2d grid containing the cost of each location in the grid.
+	 * @return
+	 */
+	public static int[][] optimalGrid(int[][] grid) {
+		
 		int m = grid.length;
-		int n = grid[0].length;
+		int n = m == 0 ? 0 : grid[0].length;
+		int[][] optGrid = new int[m][n];
+		
+		for (int i = m - 1; i >= 0; i--) {
+			for (int j = n - 1; j >= 0; j--) {
+				optGrid[i][j] = grid[i][j];
+				if (i == m - 1 && j == n - 1) {
+					continue;
+				}
 
-		boolean computePathGrid = false;
-		if (pathGrid[iFrom][jFrom] == null) {
-			computePathGrid = true;
-			pathGrid[iFrom][jFrom] = grid[iFrom][jFrom];
-		}
-
-		List<Direction> downPath = null;
-		List<Direction> rightPath = null;
-		if (iFrom < m - 1) {
-			downPath = optimalGridPath(grid, pathGrid, iFrom + 1, jFrom);
-		}
-		if (jFrom < n - 1) {
-			rightPath = optimalGridPath(grid, pathGrid, iFrom, jFrom + 1);
-		}
-
-		if (downPath == null && rightPath == null) {
-			return new LinkedList<Direction>();
-		} else if (downPath == null) {
-			if (computePathGrid) {
-				pathGrid[iFrom][jFrom] += pathGrid[iFrom + 1][jFrom];
+				if (i == m - 1) {
+					optGrid[i][j] += optGrid[i][j+1];
+				} else if (j == n - 1) {
+					optGrid[i][j] += optGrid[i+1][j];
+				} else if (optGrid[i][j+1] < optGrid[i+1][j]) {
+					optGrid[i][j] += optGrid[i][j+1];
+				} else {
+					optGrid[i][j] += optGrid[i+1][j];
+				}
 			}
-			rightPath.add(0, Direction.RIGHT);
-			return rightPath;
-		} else if (rightPath == null) {
-			if (computePathGrid) {
-				pathGrid[iFrom][jFrom] += pathGrid[iFrom][jFrom + 1];
-			}
-			downPath.add(0, Direction.DOWN);
-			return downPath;
 		}
 
-		if (pathGrid[iFrom + 1][jFrom] < pathGrid[iFrom][jFrom + 1]) {
-			if (computePathGrid) {
-				pathGrid[iFrom][jFrom] += pathGrid[iFrom + 1][jFrom];
-			}
-			rightPath.add(0, Direction.RIGHT);
-			return rightPath;
-		} else {
-			if (computePathGrid) {
-				pathGrid[iFrom][jFrom] += pathGrid[iFrom][jFrom + 1];
-			}
-			downPath.add(0, Direction.DOWN);
-			return downPath;			
-		}
+		return optGrid;
 	}
 	
 	/**
