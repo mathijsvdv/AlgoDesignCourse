@@ -119,6 +119,18 @@ public class Huffman {
 		public Node(Character letter, int freq) {
 			this(letter, freq, null);
 		}
+
+		public Node(int freq, Node left, Node right) {
+			this(null, freq, left, right);
+		}
+
+		public Node(int freq, Node left) {
+			this(freq, left, null);
+		}
+
+		public Node(int freq) {
+			this(freq, null);
+		}
 		
 		public boolean isLeaf() {
 			return left == null && right == null;
