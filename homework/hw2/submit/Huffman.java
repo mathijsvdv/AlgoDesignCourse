@@ -135,6 +135,30 @@ public class Huffman {
 		public boolean isLeaf() {
 			return left == null && right == null;
 		}
+
+		/**
+		* Update the character-to-encoding mapping by filling the node and its children
+		* 
+		* @param mapping - character-to-encoding mapping
+		* @return the original character
+		*/			
+		public void updateMapping(Map<Character, String> mapping, StringBuilder codeBuilder) {
+			if (isLeaf()) {
+				mapping.put(letter, codeBuilder.toString());
+			} else {
+				codeBuilder.append('0');
+				left.updateMapping(mapping, codeBuilder);
+				codeBuilder.setLength(codeBuilder.length() - 1);
+				
+				codeBuilder.append('1');
+				right.updateMapping(mapping, codeBuilder);
+				codeBuilder.setLength(codeBuilder.length() - 1);
+			}
+		}
+
+		public void updateMapping(Map<Character, String> mapping) {
+			updateMapping(mapping, new StringBuilder());
+		}
 		
 		@Override
 		public int compareTo(Node o) {
