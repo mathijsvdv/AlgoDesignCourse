@@ -140,6 +140,7 @@ public class Huffman {
 		* Update the character-to-encoding mapping by filling the node and its children
 		* 
 		* @param mapping - character-to-encoding mapping
+		* @param codeBuilder - StringBuilder for building the encoding given the current node
 		* @return the original character
 		*/			
 		public void updateMapping(Map<Character, String> mapping, StringBuilder codeBuilder) {
