@@ -7,7 +7,6 @@ public class Huffman {
 	private Node huffmanTree; //the huffman tree
 	private Map<Character, String> mapping; //maps characters to binary strings
 	
-	
 	/**
 	 * The Huffman constructor
 	 * 
@@ -22,8 +21,18 @@ public class Huffman {
 		
 		//we'll be using a priority queue to store each node with its frequency,
 		//as we need to continually find and merge the nodes with smallest frequency
-		PriorityQueue<Node> huffman = new PriorityQueue<>();
-		
+		PriorityQueue<Node> pNodes = getPriorityNodes(freqMap);
+
+		while (pNodes.size() > 1) {
+			Node left = pNodes.poll();
+			Node right = pNodes.poll();
+			Node mergedNode = new Node(left.freq + right.freq, left, right);
+			pNodes.add(mergedNode);
+		}
+
+		huffmanTree = pNodes.poll();
+		huffmanTree.updateMapping(mapping);
+
 		/*
 		 * TODO:
 		 * 1) add all nodes to the priority queue
@@ -40,8 +49,13 @@ public class Huffman {
 	 * Use the global mapping to convert your input string into a binary string
 	 */
 	public String encode() {
-		//TODO
-		return null;
+		List<String> codes = new ArrayList<String>(input.length());
+		char[] chars = input.toCharArray();
+		for (char c : chars) {
+			codes.add(mapping.get(c));
+		}
+
+		return String.join("", codes);
 	}
 	
 	/**
@@ -54,8 +68,51 @@ public class Huffman {
 	 * @return the original string (should be the same as "input")
 	 */
 	public String decode(String encoding) {
-		//TODO
-		return null;
+		List<String> codes = splitCodes(encoding);
+		int n = codes.size();
+
+		char[] chars = new char[n];
+		for (int i = 0; i < chars.length; i++) {
+			String code = codes.get(i);
+			chars[i] = decodeCharacter(code);
+		}
+
+		return new String(chars);
+	}
+
+	private static List<String> splitCodes(String encoding) {
+		List<String> codes = new ArrayList<String>();
+		int iStart = 0;
+		for (int iEnd = 0; iEnd < encoding.length(); iEnd++) {
+			char c = encoding.charAt(iEnd);
+			if (c == '0') {
+				codes.add(encoding.substring(iStart, iEnd + 1));
+				iStart = iEnd + 1;
+			}
+		}
+		codes.add(encoding.substring(iStart));
+
+		return codes;
+	}
+
+	/**
+	* Use the huffmanTree to decrypt a single code to a character
+	* 
+	* @param code - the encoded string that needs to be decrypted to a character
+	* @return the original character
+	*/		
+	private char decodeCharacter(String code) {
+		Node node = huffmanTree;
+		for (char bit : code.toCharArray()) {
+			if (bit == '0') {
+				node = huffmanTree.left;
+			} else if (bit == '1') {
+				node = huffmanTree.right;
+			} else {
+				throw new IllegalArgumentException("Code string should only contain 0s and 1s");
+			}
+		}
+		return node.letter;
 	}
 	
 	/**
@@ -69,6 +126,7 @@ public class Huffman {
 	public static double compressionRatio(String input) {
 		Huffman h = new Huffman(input);
 		String encoding = h.encode();
+		System.out.println(String.format("Encoding for '%s':", input) + encoding);
 		int encodingLength = encoding.length();
 		int originalLength = 8 * input.length();
 		return encodingLength / (double) originalLength;
@@ -90,6 +148,15 @@ public class Huffman {
 		return freqMap;
 	}
 
+	private PriorityQueue<Node> getPriorityNodes(Map<Character, Integer> freqMap) {
+		PriorityQueue<Node> pNodes = new PriorityQueue<>();
+		for (Map.Entry<Character, Integer> entry : freqMap.entrySet()) {
+			Node node = new Node(entry.getKey(), entry.getValue());
+			pNodes.add(node);
+		}
+
+		return pNodes;
+	}
 
 	/**
 	 * An inner Node class to build your huffman tree
