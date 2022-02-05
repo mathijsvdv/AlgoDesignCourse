@@ -82,7 +82,34 @@ public class Maze {
 	 * 
 	 */
 	public List<Move> solveMaze() {
-		//TODO
+		boolean[] visited = new boolean[n*n]; // For each vertex
+		visited[startVertex] = true;
+		
+		List<Move> moves = new LinkedList<Move>();
+		int currentVertex = startVertex;
+
+		return solveMaze(visited, currentVertex, moves);
+	}
+
+	private List<Move> solveMaze(boolean[] visited, int currentVertex, List<Move> moves) {
+		if (currentVertex == endVertex) {
+			return moves;
+		}
+
+		for (int nextVertex : g.neighbors(currentVertex)) {
+			if (visited[nextVertex]) {
+				continue;
+			}
+			visited[nextVertex] = true;
+			moves.add(determineMove(currentVertex, nextVertex));
+			List<Move> solution = solveMaze(visited, nextVertex, moves);
+			if (solution == null) {
+				moves.remove(moves.size() - 1);
+			} else {
+				return solution;
+			}
+		}
+
 		return null;
 	}
 	
