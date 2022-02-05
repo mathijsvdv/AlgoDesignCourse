@@ -7,6 +7,7 @@ public class Maze {
 	Graph g; //We will store the maze internally as a graph
 	int startVertex; //one of the vertices in the graph will be the start of the maze
 	int endVertex; //another will be the end of the maze
+	int n; // Number of points that the maze is wide/long
 	
 	/**
 	 * We will store an nxn maze in a textfile, and read it in.
@@ -25,9 +26,9 @@ public class Maze {
 		
 		//create the 2d grid from the maze textfile
 		int[][] grid = createGrid(filename);
-		
+
 		//identify start and end vertices
-		int n = grid.length;
+		n = grid.length;
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
 				if (grid[row][col] == 2) {
@@ -71,7 +72,48 @@ public class Maze {
 	public enum Move {
 		UP, DOWN, LEFT, RIGHT
 	}
+
+	public class Point {
+		int row; // Row index of the point in the maze
+		int column; // Column index of the point in the maze
+
+		public Point(int row, int column) {
+			this.row = row;
+			this.column = column;
+		}
+	}
+
+	public Point getPoint(int vertex) {
+		int row = vertex / n;
+		int column = vertex % n;
+		return new Point(row, column);
+	}
+
+	public static Move determineMove(Point p, Point q) {
+		if (p.row == q.row) {
+			if (p.column < q.column) {
+				return Move.RIGHT;
+			} else if (p.column > q.column) {
+				return Move.LEFT;
+			}
+		} else if (p.column == q.column) {
+			if (p.row < q.row) {
+				return Move.DOWN;
+			} else if (p.row > q.row) {
+				return Move.UP;
+			}
+		}
+		throw new IllegalArgumentException(
+			String.format("Unable to determine move direction from points %s to %s", p, q)
+		);
+	}
 	
+	public Move determineMove(int u, int v) {
+		Point p = getPoint(u);
+		Point q = getPoint(v);
+		return determineMove(p, q);
+	}
+
 	/**
 	 * Helper function for creating a 2d grid to represent the maze, given a file name
 	 * 
