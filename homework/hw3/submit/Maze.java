@@ -15,7 +15,7 @@ public class Maze {
 	 * A maze is simply represented as a textfile with 4 numbers: 0, 1, 2, 3
 	 * 
 	 * 0s represent walls- this is not a valid part of the maze
-	 * 1s represent valid parts of the maze (i.e. blocks you can move to
+	 * 1s represent valid parts of the maze (i.e. blocks you can move to)
 	 * 2 represents the starting point of the maze
 	 * 3 represents the end point of the maze.
 	 * 
@@ -27,25 +27,47 @@ public class Maze {
 		//create the 2d grid from the maze textfile
 		int[][] grid = createGrid(filename);
 
-		//identify start and end vertices
+		//identify start and end vertices, then add any edges
 		n = grid.length;
+		g = new Graph(n*n);
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
+				Point p = new Point(row, col);
+				int v = getVertex(p);
 				if (grid[row][col] == 2) {
-					startVertex = row*n + col;
+					startVertex = v;
 				}
 				if (grid[row][col] == 3) {
-					endVertex = row*n + col;
+					endVertex = v;
 				}
+				addRightAndDownEdges(grid, p, v);
 			}
 		}
-		
-		//TODO
-		//determine how to represent the graph and create it
-		//initialize startVertex and endVertex
-		g = null;
 	}
 	
+	/**
+	 * 
+	 * Add any edges that face to the right and down, if applicable
+	 * 
+	 * By doing this for every vertex we add all valid edges.
+	 * 
+	 * @param grid - grid to check for valid edges 
+	 * @param p - point corresponding to the vertex
+	 * @param v - vertex for which adding right and down edges will be considered
+	 * 
+	 */	
+	private void addRightAndDownEdges(int[][] grid, Point p, int v) {
+		if (grid[p.row][p.col] == 0) {
+			return;
+		}
+		if (p.row < n && grid[p.row+1][p.col] > 0) {
+			g.addEdge(v, v+n);
+		}
+		if (p.col < n && grid[p.row][p.col+1] > 0) {
+			g.addEdge(v, v+1);
+		}
+	}
+
 	/**
 	 * 
 	 * This algorithm should solve the maze output a list of "moves", beginning at the start vertex,
@@ -75,28 +97,32 @@ public class Maze {
 
 	public class Point {
 		int row; // Row index of the point in the maze
-		int column; // Column index of the point in the maze
+		int col; // Column index of the point in the maze
 
-		public Point(int row, int column) {
+		public Point(int row, int col) {
 			this.row = row;
-			this.column = column;
+			this.col = col;
 		}
 	}
 
-	public Point getPoint(int vertex) {
-		int row = vertex / n;
-		int column = vertex % n;
-		return new Point(row, column);
+	public Point getPoint(int v) {
+		int row = v / n;
+		int col = v % n;
+		return new Point(row, col);
+	}
+
+	public int getVertex(Point p) {
+		return p.row*n + p.col;
 	}
 
 	public static Move determineMove(Point p, Point q) {
 		if (p.row == q.row) {
-			if (p.column < q.column) {
+			if (p.col < q.col) {
 				return Move.RIGHT;
-			} else if (p.column > q.column) {
+			} else if (p.col > q.col) {
 				return Move.LEFT;
 			}
-		} else if (p.column == q.column) {
+		} else if (p.col == q.col) {
 			if (p.row < q.row) {
 				return Move.DOWN;
 			} else if (p.row > q.row) {
