@@ -1,9 +1,9 @@
 #!/bin/sh
 # copy source to test directory
 echo "Copying code to test/ directory"
-cp ~/workspace/submit/Graph.java .
-cp ~/workspace/submit/Maze.java .
-cp ~/workspace/submit/MyTests.java .
+cp ../submit/Graph.java .
+cp ../submit/Maze.java .
+cp ../submit/MyTests.java .
 
 # delete the .class files (if they exist?)
 if [ -e Graph.class ]; then
