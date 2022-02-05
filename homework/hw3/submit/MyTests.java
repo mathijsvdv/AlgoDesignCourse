@@ -16,7 +16,16 @@ public class MyTests {
 		assertEquals(Maze.Move.DOWN, moves.get(0));
 		assertEquals(Maze.Move.RIGHT, moves.get(1));
 	}
-	
+
+	@Test
+	public void mazeSampleGraphTest() throws IOException {
+		Maze m = new Maze("files/mazeSmall.txt");
+		Graph gExpected = new Graph(m.n * m.n);
+		gExpected.addEdge(0, 2);
+		gExpected.addEdge(2, 3);
+		assertEquals(gExpected, m.g);
+	}
+
 	@Test
 	public void testSmall() throws IOException {
 		Graph g = new Graph(4);

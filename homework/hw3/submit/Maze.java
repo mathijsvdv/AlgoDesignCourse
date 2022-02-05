@@ -60,10 +60,10 @@ public class Maze {
 		if (grid[p.row][p.col] == 0) {
 			return;
 		}
-		if (p.row < n && grid[p.row+1][p.col] > 0) {
+		if (p.row < n - 1 && grid[p.row+1][p.col] > 0) {
 			g.addEdge(v, v+n);
 		}
-		if (p.col < n && grid[p.row][p.col+1] > 0) {
+		if (p.col < n - 1 && grid[p.row][p.col+1] > 0) {
 			g.addEdge(v, v+1);
 		}
 	}
