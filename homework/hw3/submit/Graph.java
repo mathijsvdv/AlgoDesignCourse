@@ -47,6 +47,19 @@ public class Graph {
 	public int size() {
 		return n;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+
+		if (obj.getClass() != this.getClass()) {
+			return false;
+		}
+		final Graph other = (Graph) obj;
+		return this.size() == other.size() && Arrays.equals(this.adj, other.adj);
+	}
 	
 	/**
 	 * returns the number of shortest paths from s to t
