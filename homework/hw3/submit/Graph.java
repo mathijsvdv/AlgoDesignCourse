@@ -86,7 +86,7 @@ public class Graph {
 		while (q.size() > 0) {
 			s = q.poll();
 			if (foundShortestPath && levels[s] > lengthShortestPath) {
-				return numShortestPathsSoFar;
+				break;
 			}
 			if (s == t) {
 				numShortestPathsSoFar++;
@@ -105,7 +105,11 @@ public class Graph {
 			}
 			finished[s] = true;
 		}
-
-		return -1;
+		
+		if (foundShortestPath) {
+			return numShortestPathsSoFar;
+		} else {
+			return -1;
+		}
 	}
 }
