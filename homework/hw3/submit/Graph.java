@@ -72,10 +72,6 @@ public class Graph {
 	 * @return
 	 */
 	public int numShortestPaths(int s, int t) {
-		if (s == t) {
-			return 1;
-		}
-
 		int n = size();
 		int[] numShortestPathsToVertex = new int[n];
 		numShortestPathsToVertex[s] = 1;

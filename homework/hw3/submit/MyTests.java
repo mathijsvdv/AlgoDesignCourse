@@ -37,6 +37,6 @@ public class MyTests {
 		assertEquals(2, g.numShortestPaths(1, 2));
 		assertEquals(1, g.numShortestPaths(0, 1));
 		assertEquals(1, g.numShortestPaths(2, 3));
+		assertEquals(1, g.numShortestPaths(2, 2));
 	}
-
 }
