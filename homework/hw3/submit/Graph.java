@@ -72,7 +72,40 @@ public class Graph {
 	 * @return
 	 */
 	public int numShortestPaths(int s, int t) {
-		//TODO
+		return numShortestPaths(s, t, 0);
+	}
+
+	private int numShortestPaths(int s, int t, int numShortestPathsSoFar) {
+		Queue<Integer> q = new LinkedList<Integer>();
+		q.add(s);
+		boolean[] finished = new boolean[size()];
+		int[] levels = new int[size()];
+		boolean foundShortestPath = false;
+		int lengthShortestPath = -1;
+
+		while (q.size() > 0) {
+			s = q.poll();
+			if (foundShortestPath && levels[s] > lengthShortestPath) {
+				return numShortestPathsSoFar;
+			}
+			if (s == t) {
+				numShortestPathsSoFar++;
+				if (!foundShortestPath) {
+					foundShortestPath = true;
+					lengthShortestPath = levels[s];
+				}
+			}
+			if (!foundShortestPath) {
+				for (Integer neighbor : neighbors(s)) {
+					if (!finished[neighbor]) {
+						q.add(neighbor);
+						levels[neighbor] = levels[s] + 1;
+					}
+				}
+			}
+			finished[s] = true;
+		}
+
 		return -1;
 	}
 }
