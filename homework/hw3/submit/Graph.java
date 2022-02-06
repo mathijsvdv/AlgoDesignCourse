@@ -72,44 +72,39 @@ public class Graph {
 	 * @return
 	 */
 	public int numShortestPaths(int s, int t) {
-		return numShortestPaths(s, t, 0);
-	}
+		if (s == t) {
+			return 1;
+		}
 
-	private int numShortestPaths(int s, int t, int numShortestPathsSoFar) {
+		int n = size();
+		int[] numShortestPathsToVertex = new int[n];
+		numShortestPathsToVertex[s] = 1;
+		Integer[] levels = new Integer[n];
+		levels[s] = 0;
 		Queue<Integer> q = new LinkedList<Integer>();
 		q.add(s);
-		boolean[] finished = new boolean[size()];
-		int[] levels = new int[size()];
-		boolean foundShortestPath = false;
-		int lengthShortestPath = -1;
 
 		while (q.size() > 0) {
 			s = q.poll();
-			if (foundShortestPath && levels[s] > lengthShortestPath) {
-				break;
+
+			// Stop if our path length already exceeds the shortest path
+			Integer lengthShortestPath = levels[t];
+			boolean foundShortestPath = lengthShortestPath != null;
+			if (foundShortestPath && levels[s] >= lengthShortestPath) {
+				break;  
 			}
-			if (s == t) {
-				numShortestPathsSoFar++;
-				if (!foundShortestPath) {
-					foundShortestPath = true;
-					lengthShortestPath = levels[s];
+
+			for (Integer neighbor : neighbors(s)) {
+				if (levels[neighbor] == null) {
+					q.add(neighbor);
+					levels[neighbor] = levels[s] + 1;
+				}
+				if (levels[neighbor] == levels[s] + 1) {
+					numShortestPathsToVertex[neighbor] += numShortestPathsToVertex[s];
 				}
 			}
-			if (!foundShortestPath) {
-				for (Integer neighbor : neighbors(s)) {
-					if (!finished[neighbor]) {
-						q.add(neighbor);
-						levels[neighbor] = levels[s] + 1;
-					}
-				}
-			}
-			finished[s] = true;
 		}
 		
-		if (foundShortestPath) {
-			return numShortestPathsSoFar;
-		} else {
-			return -1;
-		}
+		return numShortestPathsToVertex[t];
 	}
 }
