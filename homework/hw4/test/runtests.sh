@@ -1,9 +1,9 @@
 #!/bin/sh
 # copy source to test directory
 echo "Copying code to test/ directory"
-cp ~/workspace/submit/Arbitrage.java .
-cp ~/workspace/submit/MST.java .
-cp ~/workspace/submit/MyTests.java .
+cp ../submit/Arbitrage.java .
+cp ../submit/MST.java .
+cp ../submit/MyTests.java .
 
 # delete the .class files (if they exist?)
 if [ -e Arbitrage.class ]; then
