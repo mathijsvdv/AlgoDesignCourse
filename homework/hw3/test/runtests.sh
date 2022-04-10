@@ -1,16 +1,16 @@
 #!/bin/sh
 # copy source to test directory
 echo "Copying code to test/ directory"
-cp ../submit/GreedyDynamicAlgorithms.java .
-cp ../submit/Huffman.java .
+cp ../submit/Graph.java .
+cp ../submit/Maze.java .
 cp ../submit/MyTests.java .
 
 # delete the .class files (if they exist?)
-if [ -e GreedyDynamicAlgorithms.class ]; then
-    rm GreedyDynamicAlgorithms*.class
+if [ -e Graph.class ]; then
+    rm Graph*.class
 fi
-if [ -e Huffman.class ]; then
-    rm Huffman*.class
+if [ -e Maze.class ]; then
+    rm Maze*.class
 fi
 if [ -e MyTests.class ]; then
     rm MyTests.class
@@ -18,8 +18,8 @@ fi
 
 # compile their code
 echo "Attempting to compile your code"
-javac GreedyDynamicAlgorithms.java
-javac Huffman.java
+javac Graph.java
+javac Maze.java
 javac -cp .:hamcrest.jar:junit.jar MyTests.java
 
 # did it compile?
@@ -31,14 +31,13 @@ echo "Successfully compiled code"
 # made it here, run the JUnit tests
 echo "Running unit tests"
 echo
-echo "Outputting results of each test case to result.txt"
 java -cp .:hamcrest.jar:junit.jar TestRunner $1
 
 echo
 echo "Deleting extra files"
-rm Huffman*.class
-rm GreedyDynamicAlgorithms*.class
+rm Graph*.class
+rm Maze*.class
 rm MyTests.class
-rm Huffman.java
-rm GreedyDynamicAlgorithms.java
+rm Graph.java
+rm Maze.java
 rm MyTests.java
