@@ -1,6 +1,7 @@
 
 import java.util.*;
 import java.io.*;
+import Math;
 
 /**
  * Arbitrage class
@@ -72,8 +73,10 @@ public class Arbitrage {
 	 * 
 	 * This function creates the weighted, directed graph from a matrix of
 	 * exchange rates.
-	 * It takes the log of the exchange rates as the weights so that adding the weights 
-	 * is equivalent to multiplying the corresponding exchange rates.
+	 * It takes the negative log of the exchange rates as the weights so that adding 
+	 * the weights is equivalent to multiplying the corresponding exchange rates.
+	 * Finding negative cycles is then equivalent with finding a cycle where the 
+	 * the total exchange rate is greater than 1, i.e. arbitrage.
 	 */
 	public static WeightedDigraph<Double> createExchangeGraph(double[][] exchangeRates) {
 		int nCountries = exchangeRates.length;
@@ -82,7 +85,7 @@ public class Arbitrage {
 		for (int i = 0; i < nCountries; i++) {
 			double[] iExchangeRates = exchangeRates[i];
 			for (int j = 0; j < nCountries; j++) {
-				exchangeGraph.addEdge(i, j, Math.log(iExchangeRates[j]));
+				exchangeGraph.addEdge(i, j, -Math.log(iExchangeRates[j]));
 			}
 		}
 
