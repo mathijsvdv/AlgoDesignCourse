@@ -30,9 +30,10 @@ public class Arbitrage {
 		
 		//TODO: model the exchange rates as a graph and output the value of
 		//an arbitrage opportunity (see the writeup)
+		WeightedDigraph<Double> exchangeGraph = createExchangeGraph(exchangeRates); 
+
 		return null;
 	}
-	
 	
 	/**
 	 * You don't have to modify this function
@@ -65,6 +66,27 @@ public class Arbitrage {
 		br.close();
 		return exchangeRates;
 		
+	}
+
+	/**
+	 * 
+	 * This function creates the weighted, directed graph from a matrix of
+	 * exchange rates.
+	 * It takes the log of the exchange rates as the weights so that adding the weights 
+	 * is equivalent to multiplying the corresponding exchange rates.
+	 */
+	public static WeightedDigraph<Double> createExchangeGraph(double[][] exchangeRates) {
+		int nCountries = exchangeRates.length;
+
+		WeightedDigraph<Double> exchangeGraph = WeightedDigraph(nCountries);
+		for (int i = 0; i < nCountries; i++) {
+			double[] iExchangeRates = exchangeRates[i];
+			for (int j = 0; j < nCountries; j++) {
+				exchangeGraph.addEdge(i, j, Math.log(iExchangeRates[j]));
+			}
+		}
+
+		return exchangeGraph;
 	}
 
 }
